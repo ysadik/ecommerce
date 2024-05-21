@@ -1,11 +1,12 @@
 'use client'
 
-import { useStoreModal } from '@/hooks/use-store-modal'
-import { Modal } from '../ui/modal'
-
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
+
+import { useStoreModal } from '@/hooks/use-store-modal'
+import { Modal } from '../ui/modal'
 import {
   Form,
   FormControl,
@@ -16,6 +17,7 @@ import {
 } from '../ui/form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import toast from 'react-hot-toast'
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -32,7 +34,13 @@ export const StoreModal = () => {
   })
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+    try {
+      const response = await axios.post('/api/stores', values)
+
+      toast.success('Store created.')
+    } catch (error) {
+      toast.error('Something went wrong.')
+    }
   }
 
   return (
@@ -53,7 +61,11 @@ export const StoreModal = () => {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Store's name" {...field} />
+                      <Input
+                        disabled={form.formState.isSubmitting}
+                        placeholder="Store's name"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -61,10 +73,16 @@ export const StoreModal = () => {
               />
 
               <div className="pt-6 space-x-2 flex justify-end items-center w-full">
-                <Button variant="outline" onClick={storeModal.onClose}>
+                <Button
+                  disabled={form.formState.isSubmitting}
+                  variant="outline"
+                  onClick={storeModal.onClose}
+                >
                   Cancel
                 </Button>
-                <Button type="submit">Continue</Button>
+                <Button disabled={form.formState.isSubmitting} type="submit">
+                  Continue
+                </Button>
               </div>
             </form>
           </Form>
