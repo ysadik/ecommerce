@@ -1,6 +1,5 @@
 'use client'
 
-import { Modal } from '@/components/ui/modal'
 import { useStoreModal } from '@/hooks/use-store-modal'
 
 import { useEffect } from 'react'
@@ -15,6 +14,7 @@ const SetupPage = () => {
     }
   }, [isOpen, onOpen])
 
-  return <div>hello</div>
+  return null
 }
+
 export default SetupPage
