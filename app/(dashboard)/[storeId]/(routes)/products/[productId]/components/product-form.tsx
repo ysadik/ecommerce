@@ -47,7 +47,7 @@ interface ProductFormProps {
 const formSchema = z.object({
   name: z.string().min(1),
   images: z.object({ url: z.string() }).array(),
-  price: z.coerce.number().min(1),
+  price: z.string().min(1),
   categoryId: z.string().min(1),
   colorId: z.string().min(1),
   sizeId: z.string().min(1),
@@ -77,12 +77,11 @@ const ProductForm: React.FC<ProductFormProps> = ({
     defaultValues: initialData
       ? {
           ...initialData,
-          price: parseFloat(initialData?.price),
         }
       : {
           name: '',
           images: [],
-          price: 0,
+          price: '',
           categoryId: '',
           colorId: '',
           sizeId: '',
@@ -95,30 +94,29 @@ const ProductForm: React.FC<ProductFormProps> = ({
     try {
       if (initialData) {
         await axios.patch(
-          `/api/${params.storeId}/billboards/${params.billboardId}`,
+          `/api/${params.storeId}/products/${params.productId}`,
           data
         )
       } else {
-        await axios.post(`/api/${params.storeId}/billboards`, data)
+        await axios.post(`/api/${params.storeId}/products`, data)
       }
-      router.push(`/${params.storeId}/billboards`)
+      router.push(`/${params.storeId}/products`)
       router.refresh()
       toast.success(toastMessage)
     } catch (error) {
       toast.error('Something went wrong.')
+      console.log(error)
     }
   }
 
   const onDelete = async () => {
     try {
-      await axios.delete(
-        `/api/${params.storeId}/billboards/${params.billboardId}`
-      )
-      router.push(`/${params.storeId}/billboards`)
+      await axios.delete(`/api/${params.storeId}/products/${params.productId}`)
+      router.push(`/${params.storeId}/products`)
       router.refresh()
-      toast.success('Billboard deleted.')
+      toast.success('Product deleted.')
     } catch (error) {
-      toast.error('Please remove all categories using this billboard first.')
+      toast.error('Something went wrong.')
     } finally {
       setOpen(false)
     }
@@ -204,7 +202,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
                   <FormLabel>Price</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
                       disabled={form.formState.isSubmitting}
                       placeholder="9.99"
                       {...field}
