@@ -1,7 +1,7 @@
 'use client'
 
 import { AlertModal } from '@/components/modals/alert-modal'
-import { ApiAlert } from '@/components/ui/api-alert'
+import { ApiAlert } from '@/components/api-alert'
 import { Button } from '@/components/ui/button'
 import {
   Form,

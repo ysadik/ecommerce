@@ -7,7 +7,6 @@ import { Plus } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { SizeColumn, columns } from './columns'
 import { DataTable } from '@/components/ui/data-table'
-import { ApiList } from '@/components/ui/api-list'
 
 interface SizesClientProps {
   data: SizeColumn[]
@@ -31,9 +30,6 @@ const SizesClient: React.FC<SizesClientProps> = ({ data }) => {
       </div>
       <Separator />
       <DataTable searchKey="name" columns={columns} data={data} />
-      <Heading title="API" description="API calls for Sizes" />
-      <Separator />
-      <ApiList entityName="sizes" entityIdName="sizeId" />
     </>
   )
 }

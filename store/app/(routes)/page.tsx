@@ -1,4 +1,5 @@
 import getBillboard from '@/actions/get-billboard'
+import getFirstBillboard from '@/actions/get-first-billboard'
 import getProducts from '@/actions/get-products'
 import Billboard from '@/components/billboard'
 import ProductList from '@/components/product-list'
@@ -8,7 +9,7 @@ export const revalidate = 0
 
 const HomePage = async () => {
   const products = await getProducts({ isFeatured: true })
-  const billboard = await getBillboard('d8491cae-d3ca-428c-90b9-ce1e24923550')
+  const billboard = await getFirstBillboard()
   return (
     <Container>
       <div className="space-y-10 pb-10">
